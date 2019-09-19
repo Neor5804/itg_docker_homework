@@ -12,7 +12,7 @@ read -r -p "Would you like delete old Docker versions? [Y/n]" -n 1
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
-        echo && echo -e '\033[31mOld versions will be deleted\033[m' && echo
+        echo && echo -e '\033[31mOld docker versions will be deleted\033[m' && echo
 	sudo apt-get remove docker docker-engine docker.io containerd runc
 fi
 echo && echo -e '\033[32mInstall Docker Engine - Community using the repository\033[m' && echo
@@ -43,8 +43,6 @@ sudo chmod +x /usr/local/bin/docker-compose
 
 #Add user to docker group
 echo && echo -e '\033[32mPost-installation step - Manage Docker as a non-root user\033[m' && echo
-echo "Create the docker group."
-sudo groupadd docker
 echo "Add your user to the docker group."
 sudo usermod -aG docker $USER
 #Test Docker installation
