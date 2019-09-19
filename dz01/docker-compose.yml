@@ -29,7 +29,8 @@ services:
 
       back:
         container_name: wordpress
-        image: wordpress:latest
+#        image: wordpress:latest
+#        run build from Dockerfile
         volumes:
             - wordpress-volume:/var/www/html
               #        ports:

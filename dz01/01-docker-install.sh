@@ -55,3 +55,6 @@ sudo docker container ls --all
 echo "Remove test data"
 sudo docker system prune -a -f
 echo && echo -e '\033[32mDocker is ready to work!\033[m'
+
+#Start docker-compose
+
