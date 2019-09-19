@@ -1,7 +1,7 @@
 version: '3'
 services:
 
-      web:
+      front:
         container_name: nginx-proxy
         image: nginx:latest
         volumes:
@@ -19,19 +19,29 @@ services:
         volumes:
             - mariadb-volume:/var/lib/mysql
         environment:
-            - MYSQL_ROOT_PASSWORD=root
-            - MYSQL_DATABASE=wordpress
-            - MYSQL_USER=techadmin
-            - MYSQL_PASSWORD=techadmin
-              #        links:
-              #            - container2
-              #            - container3
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: wordpress
+          MYSQL_USER: techadmin
+          MYSQL_PASSWORD: techadmin
         ports:
             - "3306:3306"
         restart: always
-        #        depends_on:
-        #            - container2
-        #            - container3
+
+      back:
+        container_name: wordpress
+        image: wordpress:latest
+        volumes:
+            - wordpress-volume:/var/www/html
+              #        ports:
+              #            - "8080:80"
+        environment:
+          WORDPRESS_DB_HOST: db
+          WORDPRESS_DB_USER: techadmin
+          WORDPRESS_DB_PASSWORD: techadmin
+          WORDPRESS_DB_NAME: wordpress
+        restart: always
+
 volumes:
    mariadb-volume:
-   nginx-volume:
+#   nginx-volume:
+   wordpress-volume:

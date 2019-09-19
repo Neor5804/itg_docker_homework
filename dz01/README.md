@@ -4,9 +4,10 @@
 - Ubuntu 18.04
 - VirtualBox Port forwarding
 - add user to docker+wheel group
-- Database: mysql-like - latest images
-- Backend: apache2/php-fpm + cms
-- Frontend: nginx - latest image
+
+- Database: mysql-like - latest docker images
+- Backend: apache2/php-fpm + cms - Dockerfile
+- Frontend: nginx - latest docker image
 
 ## Task:
 Prepare a shell script that installs Docker, Docker-compose, and
