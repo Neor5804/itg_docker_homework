@@ -34,39 +34,26 @@ echo && echo -e '\033[32mInstall the latest version of Docker Engine - Community
 sudo apt-get install docker-ce docker-ce-cli containerd.io
 echo && echo "Start the Docker daemon" && echo
 sudo systemctl start docker
-sleep 10
 
 #Install Docker Compose
 echo "Download the current stable release of Docker Compose - 1.24.1" && echo
 sudo curl -L "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 echo && echo "Apply executable permissions to the binary..." && echo
 sudo chmod +x /usr/local/bin/docker-compose
-echo $USER
-sleep 10
-read -p "Press enter to continue"
 
 #Add user to docker group
 echo && echo -e '\033[32mPost-installation step - Manage Docker as a non-root user\033[m' && echo
 echo "Create the docker group."
 sudo groupadd docker
-echo $USER
 echo "Add your user to the docker group."
 sudo usermod -aG docker $USER
-echo $USER
-read -p "Press enter to continue"
-echo "activate the changes to groups"
-#sudo newgrp docker
-echo $USER
-sleep 10
-read -p "Press enter to continue"
-
 #Test Docker installation
 echo && echo -e '\033[32mTest the Docker installation. Get version and etc...\033[m' && echo
-docker-compose --version
+sudo docker-compose --version
 #Start test-container "Hello world"
-docker run hello-world
-docker image ls
-docker container ls --all
+sudo docker run hello-world
+sudo docker image ls
+sudo docker container ls --all
 echo "Remove test data"
-docker system prune -a -f
-echo "Docker is ready to work!"
+sudo docker system prune -a -f
+echo && echo -e '\033[32mDocker is ready to work!\033[m'
