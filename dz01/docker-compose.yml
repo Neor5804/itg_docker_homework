@@ -5,7 +5,7 @@ services:
         container_name: nginx-proxy
         image: nginx:latest
         volumes:
-            - nginx-volume:/etc/nginx/
+            - ./nginx/nginx.conf:/etc/nginx/nginx.conf
         ports:
             - "80:80"
         environment:
