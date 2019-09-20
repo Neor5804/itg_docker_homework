@@ -54,6 +54,7 @@ then
 	sudo curl -L "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 	echo && echo "Apply executable permissions to the binary..." && echo
 	sudo chmod +x /usr/local/bin/docker-compose
+	docker-compose --version
 fi
 
 #Add user to docker group
@@ -68,15 +69,18 @@ then
 	id
 	echo && echo -e '\033[31mATTENTION!you need to re login to use docker as an unprivileged user!!!\033[m' && echo
 fi
+
 #Test Docker installation
-su - $USER -c "echo && echo -e '\033[32mTest the Docker installation. Get version and etc...\033[m' && echo"
-docker-compose --version
+echo && echo -e '\033[32mTest the Docker installation. Get version and etc...\033[m' && echo
+
 #Start test-container "Hello world"
-docker run hello-world
-docker image ls
-docker container ls --all
-echo "Remove test data"
-docker system prune -a -f
+echo "Login to user $USER with updated permissions"
+su - $USER -c "id && docker run hello-world &&\
+docker image ls &&\
+docker container ls --all &&\
+echo Remove test data &&\
+docker system prune -a -f"
+
 echo && echo -e '\033[32mDocker is ready to work!\033[m'
 
 
