@@ -80,7 +80,7 @@ docker image ls &&\
 docker container ls --all &&\
 echo Remove test data &&\
 docker system prune -a -f"
-
+id
 echo && echo -e '\033[32mDocker is ready to work!\033[m'
 
 
