@@ -6,8 +6,8 @@ services:
         image: nginx:latest
         volumes:
             - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-              #        ports:
-                #            - "80:80"
+#        ports:
+#            - "80:80"
         environment:
             - NGINX_HOST=127.0.0.1
             - NGINX_PORT=80
@@ -25,20 +25,22 @@ services:
           MYSQL_DATABASE: wordpress
           MYSQL_USER: techadmin
           MYSQL_PASSWORD: techadmin
-          #        ports:
-                #            - "3306:3306"
+#        ports:
+#            - "3306:3306"
         restart: always
 
       back:
         container_name: wordpress
         build: wordpress/
         volumes:
-            - wordpress-volume:/var/www/html
-        environment:
-          WORDPRESS_DB_HOST: db
-          WORDPRESS_DB_USER: techadmin
-          WORDPRESS_DB_PASSWORD: techadmin
-          WORDPRESS_DB_NAME: wordpress
+            - ./wordpress/apache2/httpd.conf:/usr/local/apache2/conf/httpd.conf
+            - ./wordpress/wp-config.php:/var/www/html/wp-config.php
+#            - wordpress-volume:/var/www/html
+#        environment:
+#          WORDPRESS_DB_HOST: db
+#          WORDPRESS_DB_USER: techadmin
+#          WORDPRESS_DB_PASSWORD: techadmin
+#          WORDPRESS_DB_NAME: wordpress
         links:
             - db
         ports:
@@ -48,4 +50,4 @@ services:
 volumes:
    mariadb-volume:
 #   nginx-volume:
-   wordpress-volume:
+#   wordpress-volume:
