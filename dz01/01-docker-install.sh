@@ -87,4 +87,4 @@ echo && echo -e '\033[32mDocker is ready to work!\033[m'
 
 
 #Start docker-compose
-
+su - $USER -c "docker-compose up -d"

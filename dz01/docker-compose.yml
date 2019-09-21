@@ -31,8 +31,8 @@ services:
 
       back:
         container_name: wordpress
-        image: ubuntu-test:latest
-#        build: wordpress/
+#        image: ubuntu-test:latest
+        build: ubuntu/
         links:
             - db
 #        ports:
