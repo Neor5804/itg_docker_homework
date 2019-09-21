@@ -83,8 +83,11 @@ docker system prune -a -f"
 id
 echo && echo -e '\033[32mDocker is ready to work!\033[m'
 
-
-
-
 #Start docker-compose
+read -r -p "Do you want to start docker-compose(nginx+db+wp)? [Y/n] " -n 1
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
 su - $USER -c "docker-compose up -d"
+echo "Please visit http://127.0.0.1"
+fi
