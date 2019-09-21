@@ -1,19 +1,19 @@
 version: '3'
 services:
 
-        #      front:
-        #        container_name: nginx-proxy
-        #        image: nginx:latest
-        #        volumes:
-        #            - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-        #        ports:
-        #            - "80:80"
-        #        environment:
-        #            - NGINX_HOST=127.0.0.1
-        #            - NGINX_PORT=80
-        #        links:
-        #            - back
-        #        restart: always
+      front:
+        container_name: nginx-proxy
+        image: nginx:latest
+        volumes:
+            - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+        ports:
+            - "80:80"
+        environment:
+            - NGINX_HOST=127.0.0.1
+            - NGINX_PORT=80
+        links:
+            - back
+        restart: always
 
       db:
         container_name: mariadb
@@ -25,40 +25,21 @@ services:
           MYSQL_DATABASE: wordpress
           MYSQL_USER: techadmin
           MYSQL_PASSWORD: techadmin
-        ports:
-            - "3306:3306"
+#        ports:
+#            - "3306:3306"
         restart: always
 
       back:
         container_name: wordpress
-        image: wp-test:latest
+        image: ubuntu-test:latest
 #        build: wordpress/
-        volumes:
-            - ./wordpress/apache2/httpd.conf:/usr/local/apache2/conf/httpd.conf
-#            - ./wordpress/wp-config.php:/var/www/html/wp-config.php
         links:
             - db
-        ports:
-            - "80:80"
+#        ports:
+#            - "80"
         restart: always
-
-        #      test-back:
-        #        container_name: wordpress2
-        #        image: wordpress:latest
-        #        volumes:
-        #            - wordpress2-volume:/var/www/html
-        #        environment:
-        #          WORDPRESS_DB_HOST: db
-        #          WORDPRESS_DB_USER: techadmin
-        #          WORDPRESS_DB_PASSWORD: techadmin
-        #          WORDPRESS_DB_NAME: wordpress
-        #        links:
-        #            - db
-        #        ports:
-        #            - "80:80"
-        #        restart: always
 
 volumes:
    mariadb-volume:
 #   nginx-volume:
-   wordpress2-volume:
+#   wordpress2-volume:

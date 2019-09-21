@@ -7,7 +7,7 @@ ENV TZ=Europe/Minsk
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN apt-get update && apt-get upgrade -y &&\
-	apt-get install -y apache2 vim curl php libapache2-mod-php php-mysql php-curl php-gd php-mbstring php-xml php-xmlrpc php-soap php-intl php-zip php-cli
+	apt-get install -y apache2 curl php libapache2-mod-php php-mysql php-curl php-gd php-mbstring php-xml php-xmlrpc php-soap php-intl php-zip php-cli
 
 RUN mkdir -p /var/www/wordpress
 WORKDIR /var/www/wordpress
@@ -22,12 +22,15 @@ RUN a2enmod rewrite &&\
 	apache2ctl configtest &&\
         service apache2 restart
 
-COPY wordpress /var/www/wordpress
-
-RUN chown -R www-data:www-data /var/www/wordpress &&\
+RUN curl -SOk https://wordpress.org/latest.tar.gz &&\
+       tar -xzf latest.tar.gz --strip 1
+#COPY wordpress /var/www/wordpress
+COPY wp-config.php /var/www/wordpress/wp-config.php
+RUN touch /var/www/wordpress/.htaccess &&\
+	chown -R www-data:www-data /var/www/wordpress &&\
 	find /var/www/wordpress/ -type d -exec chmod 750 {} \; &&\
 	find /var/www/wordpress/ -type f -exec chmod 640 {} \;
 
 RUN echo && ls -lah /var/www/wordpress
-
+EXPOSE 80
 CMD apachectl -D FOREGROUND
