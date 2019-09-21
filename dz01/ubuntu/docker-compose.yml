@@ -1,0 +1,12 @@
+version: '3'
+services:
+      ubuntu-test:
+        container_name: ubuntu-test
+        image: ubuntu-test:latest
+#        build: wordpress/
+#        volumes:
+#            - ./wordpress/apache2/httpd.conf:/usr/local/apache2/conf/httpd.conf
+#            - ./wordpress/wp-config.php:/var/www/html/wp-config.php
+        ports:
+            - "80:80"
+        restart: always
