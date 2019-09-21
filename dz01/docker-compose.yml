@@ -32,6 +32,8 @@ services:
       back:
         container_name: wordpress
 #        image: ubuntu-test:latest
+        volumes:
+            - wordpress-volume:/var/www/wordpress
         build: ubuntu/
         links:
             - db
@@ -42,4 +44,4 @@ services:
 volumes:
    mariadb-volume:
 #   nginx-volume:
-#   wordpress2-volume:
+   wordpress-volume:
