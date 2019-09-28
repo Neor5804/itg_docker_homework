@@ -9,6 +9,7 @@ ansible staging_servers -m setup
 
 #SHELL module (COMMAND)
 ansible all -m shell -a "uptime"
+ansible all -m command -a "ls /tmp"
 
 #COPY module
 ansible all -m copy -a "src=./Hello dest=/home mode=777" -b
@@ -32,3 +33,9 @@ ansible all -m uri -a "url=http://google.com return_content=yes"
 #SERVICE module
 ansible all -m apt -a "name=apache2 state=latest" -b
 ansible all -m service -a "name=apache2 state=started enabled=yes"
+
+#DEBUG_MODE (verbose)
+ansible all -m command -a "ls /tmp" -vvvv
+
+#ANSIBLE DOCUMENTATION
+ansible-doc -l | grep azure_
