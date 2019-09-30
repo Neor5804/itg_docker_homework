@@ -2,16 +2,36 @@
 slave0 ansible_host=10.0.3.6
 slave1 ansible_host=10.0.3.8
 
-[ubuntu_servers:vars]
-ansible_user = slave
-ansible_password = slave
-ansible_sudo_pass = slave
-ansible_port = 22
-ansible_ssh_private_key_file=/home/master/.ssh/id_rsa
-ansible_python_interpreter=/usr/bin/python3
 
 [staging_servers]
 slave0 ansible_host=10.0.3.6
 
+[staging_web]
+slave0 ansible_host=10.0.3.6
+
+[staging_app]
+slave0 ansible_host=10.0.3.6
+
+[staging_all:children]
+[staging_web]
+[staging_app]
+
+
 [prod_servers]
 slave1 ansible_host=10.0.3.8
+
+
+[prod_web]
+slave1 ansible_host=10.0.3.8
+
+[prod_app]
+slave1 ansible_host=10.0.3.8
+
+[prod_all:children]
+[prod_web]
+[prod_app]
+
+
+[DEBUG_SERVERS]
+slave0 ansible_host=10.0.3.6	owner=Vadik
+slave1 ansible_host=10.0.3.8	owner=Vadim
