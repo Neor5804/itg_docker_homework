@@ -1,0 +1,35 @@
+---
+- name: Install microk8s
+  hosts: staging_servers
+  become: yes
+
+  tasks:
+
+  - name: install microk8s
+    snap:
+      state: present
+      name: microk8s
+      classic: yes
+
+  - name: Add the user 'slave' to microk8s group
+    user:
+      name: slave
+      group: microk8s
+
+  - name: Start microk8s
+    command: microk8s.start
+
+  - name: Enable microk8s extensions
+    shell: microk8s.enable "{{ item }}"
+    with_items:
+      - ingress
+      - metrics-server
+      - registry
+      - storage
+
+  - name: Show status
+    shell: microk8s.status
+    register: status
+    
+  - debug:
+      var: status.stdout_lines

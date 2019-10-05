@@ -1,0 +1,25 @@
+---
+- name: Install microk8s
+  hosts: staging_servers
+  become: yes
+  vars:
+    source_file: ./deploy
+    destin_file: /tmp
+
+  tasks:
+
+  - name: Copy files for deploy
+    copy: src={{ source_file }} dest={{ destin_file }} mode=0555
+
+  - name: Apply the kustomization directory to create the Secret object.
+    shell: microk8s.kubectl apply -k /tmp/deploy/
+
+  - name: Deploy MariaDB and WordPress
+    shell: microk8s.kubectl apply -f /tmp/deploy/{{ item }}
+    with_items:
+       - mariadb-pvc.yml
+       - mariadb-service.yml
+       - mariadb-deployment.yml
+       - wordpress-pvc.yml
+       - wordpress-service.yml
+       - wordpress-deployment.yml

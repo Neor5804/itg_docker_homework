@@ -9,8 +9,6 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN apt-get update && apt-get upgrade -y &&\
 	apt-get install -y apache2 curl php libapache2-mod-php php-mysql php-curl php-gd php-mbstring php-xml php-xmlrpc php-soap php-intl php-zip php-cli
 
-RUN mkdir -p /var/www/wordpress
-
 WORKDIR /var/www/wordpress
 
 COPY wordpress.conf /etc/apache2/sites-available/wordpress.conf

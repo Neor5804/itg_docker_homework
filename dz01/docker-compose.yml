@@ -25,23 +25,17 @@ services:
           MYSQL_DATABASE: wordpress
           MYSQL_USER: techadmin
           MYSQL_PASSWORD: techadmin
-#        ports:
-#            - "3306:3306"
         restart: always
 
       back:
         container_name: wordpress
-#        image: ubuntu-test:latest
         volumes:
             - wordpress-volume:/var/www/wordpress
         build: ubuntu/
         links:
             - db
-#        ports:
-#            - "80"
         restart: always
 
 volumes:
    mariadb-volume:
-#   nginx-volume:
    wordpress-volume:
