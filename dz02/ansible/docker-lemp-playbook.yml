@@ -1,2 +1,79 @@
 ---
-- name: Prepare dockerized LEMP stack with CMS - Wordpress
+- name: Prepare dockerized LEMP stack with Wordpress
+  hosts: staging_servers
+  become: yes
+  vars:
+    source_file: ./images
+    destin_file: /tmp
+
+  tasks:
+    - name: Install pip
+      apt:
+        name: "{{ item }}"
+        state: latest
+        update_cache: true
+        force_apt_get: yes
+      with_items:
+        - python3
+        - python3-pip
+
+    - name: Install docker-py use pip
+      pip: 
+        name: docker-py
+
+    - name: Pull nginx latest image
+      docker_image:
+        name: nginx
+        tag: latest
+        source: pull
+
+    - name: Create a Frontend container
+      docker_container:
+        name: front
+        image: nginx
+        volumes:
+          - /tmp/images/nginx/nginx.conf:/etc/nginx/nginx.conf
+        links:
+         - "back"
+        ports:
+         - "80:80"
+        env:
+            NGINX_HOST: "127.0.0.1"
+            NGINX_PORT: "80"
+
+    - name: Pull MariaDB latest image
+      docker_image:
+        name: mariadb
+        tag: latest
+        source: pull
+
+    - name: Create a DataBase container
+      docker_container:
+        name: db
+        image: mariadb
+        volumes:
+          - mariadb-volume:/var/lib/mysql 
+        env:
+            MYSQL_ROOT_PASSWORD: "root"
+            MYSQL_DATABASE: "wordpress"
+            MYSQL_USER: "techadmin"
+            MYSQL_PASSWORD: "techadmin"
+
+    - name: Copy files for build
+      copy: src={{ source_file }} dest={{ destin_file }} mode=0555
+
+    - name: Build Docker image from Dockerfile
+      docker_image:
+        name: ubuntu_cms
+        build:
+          path: /tmp/images/ubuntu/
+        source: build
+
+    - name: Create a Apache+PHP+Wordpress container
+      docker_container:
+        name: back
+        image: ubuntu_cms
+        volumes:
+          - wordpress-volume:/var/www/wordpress
+        links:
+          - "db"

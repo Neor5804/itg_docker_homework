@@ -1,0 +1,44 @@
+---
+- name: Install apache and uload my web page
+  hosts: prod_servers
+  become: yes
+  vars:
+    source_file: ./TestWebSite/index.html
+    destin_file: /var/www/html
+
+  tasks:
+   - name: "Check And Print OS Family"
+     debug: var:ansible_os_family
+
+   - block: #Block for Debian
+     - name: Install Apache Web Server for Debian
+       apt: name:apache2 state:present
+
+     - name: Copy index.html to TestWebSite
+       copy: src={{ source_file }} dest={{ destin_file }} mode=0555
+       notify: Restart Apache
+
+     - name: Start Webservers and enable on boot
+       service: name:apache2 state:started enabled:yes
+     when: ansible_facts['ansible_os_family'] == "Debian"
+
+   - block: #Block for RedHat
+     - name: "Install Apache Web Server for RedHut"
+       yum: name:httpd state:present
+   
+     - name: Copy index.html to TestWebSite
+       copy: src={{ source_file }} dest={{ destin_file }} mode=0555
+       notify: Restart Apache
+   
+     - name: Start Webservers and enable on boot
+       service: name:httpd state:started enabled:yes
+     when: ansible_facts['ansible_os_family'] == "RedHut"
+
+
+
+  handlers:
+  - name: Restart Apache Debian
+    service: name:apache2 state:restarted
+
+  - name: Restart Apache RedHut
+    service: name:httpd state:restarted
